@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#667eea">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="电费监控">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="./icons/icon-192.png">
+<title>⚡ 电费监控 - 24-A404</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    background: #f0f2f5;
+    color: #1a1a2e;
+    min-height: 100vh;
+  }
+
+  /* 顶部导航 */
+  .nav {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+  .nav-left { display: flex; align-items: center; gap: 12px; }
+  .nav-logo { font-size: 28px; }
+  .nav-title { color: #fff; font-size: 22px; font-weight: 700; }
+  .nav-sub { color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 2px; }
+  .nav-right { text-align: right; color: rgba(255,255,255,0.9); }
+  .nav-time { font-size: 14px; }
+  .nav-room { font-size: 13px; opacity: 0.7; }
+
+  /* 警告横幅 */
+  .banner {
+    padding: 12px 32px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    display: none;
+  }
+  .banner.warn { background: #fff3cd; color: #856404; border-bottom: 1px solid #ffeaa7; display: block; }
+  .banner.danger { background: #f8d7da; color: #721c24; border-bottom: 1px solid #f5c6cb; display: block; }
+
+  /* 主体 */
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+  /* 卡片行 */
+  .card-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 24px; }
+
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+  .card-label { font-size: 14px; color: #6b7280; margin-bottom: 8px; }
+  .card-value { font-size: 42px; font-weight: 800; line-height: 1.1; }
+  .card-value.green { color: #22c55e; }
+  .card-value.blue { color: #3b82f6; }
+  .card-value.orange { color: #f59e0b; }
+  .card-value.red { color: #ef4444; }
+
+  .card-bar {
+    margin-top: 12px;
+    height: 8px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .card-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+  }
+
+  .card-tag {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .card-tag.ok { color: #22c55e; }
+  .card-tag.warn { color: #ef4444; }
+
+  /* 统计行 */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .stat-item {
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .stat-label { font-size: 12px; color: #9ca3af; margin-bottom: 6px; }
+  .stat-value { font-size: 24px; font-weight: 700; color: #1a1a2e; }
+  .stat-unit { font-size: 13px; color: #9ca3af; font-weight: 400; }
+
+  /* 图表容器 */
+  .chart-container {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .chart-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .chart-wrapper {
+    position: relative;
+    height: 320px;
+  }
+
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  /* 历史表格 */
+  .table-container {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .table-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; padding: 10px 12px; font-size: 13px; color: #6b7280; border-bottom: 2px solid #f0f2f5; }
+  td { padding: 10px 12px; font-size: 14px; border-bottom: 1px solid #f0f2f5; }
+  tr:hover td { background: #f8f9fc; }
+  .td-power { font-weight: 600; }
+  .consumed { color: #ef4444; font-weight: 600; }
+
+  /* 响应式 */
+  @media (max-width: 768px) {
+    .card-row, .stats-row, .chart-grid { grid-template-columns: 1fr; }
+    .nav { flex-direction: column; gap: 8px; text-align: center; }
+  }
+
+  /* 刷新提示 */
+  .footer {
+    text-align: center;
+    padding: 16px;
+    color: #9ca3af;
+    font-size: 12px;
+  }
+
+  /* 刷新按钮 */
+  .refresh-btn {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .refresh-btn:hover { background: rgba(255,255,255,0.3); }
+  .refresh-btn:active { transform: scale(0.95); }
+  .refresh-btn.loading { opacity: 0.6; pointer-events: none; }
+  .refresh-btn .spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* 刷新成功提示 */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #1a1a2e;
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+    z-index: 9999;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<div class="nav">
+  <div class="nav-left">
+    <span class="nav-logo">⚡</span>
+    <div>
+      <div class="nav-title">电费监控仪表盘</div>
+      <div class="nav-sub">大连东软信息学院 · 软件园校区三期</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="nav-time">🕐 2026-07-12 08:52</div>
+    <div class="nav-room">🏠 24-A404</div>
+    <button class="refresh-btn" id="refreshBtn" onclick="handleRefresh()">
+      <span id="refreshIcon">🔄</span> <span id="refreshText">刷新查询</span>
+    </button>
+  </div>
+</div>
+
+<!-- 警告横幅 -->
+<div class="banner danger">⚠️ 电量仅剩 6.90度，余额仅剩 3.45元，请尽快充值！</div>
+
+<div class="container">
+  <!-- 三张主数据卡片 -->
+  <div class="card-row">
+    <div class="card">
+      <div class="card-label">⚡ 剩余电量</div>
+      <div class="card-value red">6.90度</div>
+      <div class="card-bar">
+        <div class="card-bar-fill" style="width: 6.9%; background: #ef4444;"></div>
+      </div>
+      <div class="card-tag warn">
+        ⚠️ 电量偏低，请充值
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">💰 当前余额</div>
+      <div class="card-value red">3.45元</div>
+      <div class="card-bar">
+        <div class="card-bar-fill" style="width: 6.9%; background: #ef4444;"></div>
+      </div>
+      <div class="card-tag warn">
+        ⚠️ 余额偏低，请充值
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">🎁 剩余补助</div>
+      <div class="card-value orange">0.00度</div>
+      <div class="card-bar">
+        <div class="card-bar-fill" style="width: 0%; background: #f59e0b;"></div>
+      </div>
+      <div class="card-tag " style="color: #9ca3af;">
+        暂无补助
+      </div>
+    </div>
+  </div>
+
+  <!-- 统计概览 -->
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-label">📊 日均用电</div>
+      <div class="stat-value">1.24<span class="stat-unit"> 度/天</span></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">📅 预估可用</div>
+      <div class="stat-value" style="color: #22c55e">5<span class="stat-unit"> 天</span></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">⚡ 累计消耗</div>
+      <div class="stat-value">52.0<span class="stat-unit"> 度</span></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">📋 查询次数</div>
+      <div class="stat-value">13<span class="stat-unit"> 次</span></div>
+    </div>
+  </div>
+
+  <!-- 电量消耗曲线 -->
+  <div class="chart-container">
+    <div class="chart-title">📉 电量消耗曲线</div>
+    <div class="chart-wrapper">
+      <canvas id="powerChart"></canvas>
+    </div>
+  </div>
+
+  <!-- 双图：余额趋势 + 每次消耗 -->
+  <div class="chart-grid">
+    <div class="chart-container">
+      <div class="chart-title">💰 余额变化趋势</div>
+      <div class="chart-wrapper">
+        <canvas id="balanceChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-container">
+      <div class="chart-title">⚡ 区间用电量</div>
+      <div class="chart-wrapper">
+        <canvas id="consumptionChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- 每日消耗柱状图 -->
+  <div class="chart-container">
+    <div class="chart-title">📊 每日用电量统计</div>
+    <div class="chart-wrapper" style="height: 260px;">
+      <canvas id="dailyChart"></canvas>
+    </div>
+  </div>
+
+  <!-- 历史记录表格 -->
+  <div class="table-container">
+    <div class="table-title">📋 历史查询记录</div>
+    <table>
+      <thead>
+        <tr>
+          <th>查询时间</th>
+          <th>寝室号</th>
+          <th>剩余电量</th>
+          <th>当前余额</th>
+          <th>区间消耗</th>
+        </tr>
+      </thead>
+      <tbody id="historyTable">
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    自动生成于 2026-07-12 09:22:49 · 数据来源：大连东软信息学院电费查询系统
+  </div>
+</div>
+
+<script>
+const chartLabels = ["05-31 13:54", "05-31 14:10", "05-31 14:23", "05-31 15:02", "05-31 15:02", "05-31 15:03", "05-31 15:28", "05-31 15:37", "05-31 22:31", "05-31 22:50", "07-12 08:44", "07-12 08:46", "07-12 08:52"];
+const powerData = [58.9, 58.81, 58.74, 58.57, 58.57, 58.56, 58.48, 58.45, 55.45, 55.43, 6.93, 6.93, 6.9];
+const balanceData = [29.45, 29.41, 29.37, 29.29, 29.29, 29.28, 29.24, 29.22, 27.72, 27.72, 3.47, 3.47, 3.45];
+const consumptionData = [0, 0.09, 0.07, 0.17, 0, 0.01, 0.08, 0.03, 3.0, 0.02, 48.5, 0, 0.03];
+const dailyLabels = ["2026-05-31", "2026-07-12"];
+const dailyValues = [3.47, 48.53];
+
+Chart.defaults.font.family = "'Microsoft YaHei', sans-serif";
+Chart.defaults.color = '#6b7280';
+
+// 电量消耗曲线
+new Chart(document.getElementById('powerChart'), {
+  type: 'line',
+  data: {
+    labels: chartLabels,
+    datasets: [{
+      label: '剩余电量 (度)',
+      data: powerData,
+      borderColor: '#667eea',
+      backgroundColor: 'rgba(102,126,234,0.1)',
+      borderWidth: 2.5,
+      fill: true,
+      tension: 0.3,
+      pointRadius: 4,
+      pointHoverRadius: 7,
+      pointBackgroundColor: '#667eea',
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: true, position: 'top' },
+      tooltip: {
+        callbacks: {
+          label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y + ' 度'
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: { display: true, text: '剩余电量 (度)' }
+      }
+    }
+  }
+});
+
+// 余额趋势
+new Chart(document.getElementById('balanceChart'), {
+  type: 'line',
+  data: {
+    labels: chartLabels,
+    datasets: [{
+      label: '余额 (元)',
+      data: balanceData,
+      borderColor: '#3b82f6',
+      backgroundColor: 'rgba(59,130,246,0.1)',
+      borderWidth: 2.5,
+      fill: true,
+      tension: 0.3,
+      pointRadius: 4,
+      pointHoverRadius: 7,
+      pointBackgroundColor: '#3b82f6',
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: true, position: 'top' },
+      tooltip: {
+        callbacks: {
+          label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y + ' 元'
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: { display: true, text: '余额 (元)' }
+      }
+    }
+  }
+});
+
+// 区间消耗
+new Chart(document.getElementById('consumptionChart'), {
+  type: 'bar',
+  data: {
+    labels: chartLabels,
+    datasets: [{
+      label: '区间用电 (度)',
+      data: consumptionData,
+      backgroundColor: consumptionData.map(v => v > 3 ? '#ef4444' : v > 1 ? '#f59e0b' : '#22c55e'),
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: true, position: 'top' },
+      tooltip: {
+        callbacks: {
+          label: ctx => '消耗: ' + ctx.parsed.y + ' 度'
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: { display: true, text: '用电量 (度)' }
+      }
+    }
+  }
+});
+
+// 每日消耗
+new Chart(document.getElementById('dailyChart'), {
+  type: 'bar',
+  data: {
+    labels: dailyLabels,
+    datasets: [{
+      label: '每日用电 (度)',
+      data: dailyValues,
+      backgroundColor: '#667eea',
+      borderRadius: 8,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: true, position: 'top' },
+      tooltip: {
+        callbacks: {
+          label: ctx => '日用电: ' + ctx.parsed.y + ' 度'
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: { display: true, text: '用电量 (度)' }
+      }
+    }
+  }
+});
+
+// 历史表格
+const historyData = [{"time": "2026-05-31 13:54:34", "custRechNo": "24-A404", "power_raw": "58.90度", "power_num": 58.9, "balance_raw": "29.45元", "balance_num": 29.45, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 14:10:35", "custRechNo": "24-A404", "power_raw": "58.81度", "power_num": 58.81, "balance_raw": "29.41元", "balance_num": 29.41, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 14:23:48", "custRechNo": "24-A404", "power_raw": "58.74度", "power_num": 58.74, "balance_raw": "29.37元", "balance_num": 29.37, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 15:02", "custRechNo": "24-A404", "power_raw": "58.57度", "power_num": 58.57, "balance_raw": "29.29元", "balance_num": 29.29, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 15:02", "custRechNo": "24-A404", "power_raw": "58.57度", "power_num": 58.57, "balance_raw": "29.29元", "balance_num": 29.29, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 15:03:28", "custRechNo": "24-A404", "power_raw": "58.56度", "power_num": 58.56, "balance_raw": "29.28元", "balance_num": 29.28, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 15:28:41", "custRechNo": "24-A404", "power_raw": "58.48度", "power_num": 58.48, "balance_raw": "29.24元", "balance_num": 29.24, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 15:37", "custRechNo": "24-A404", "power_raw": "58.45度", "power_num": 58.45, "balance_raw": "29.22元", "balance_num": 29.22, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 22:31", "custRechNo": "24-A404", "power_raw": "55.45度", "power_num": 55.45, "balance_raw": "27.72元", "balance_num": 27.72, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 22:50", "custRechNo": "24-A404", "power_raw": "55.43度", "power_num": 55.43, "balance_raw": "27.72元", "balance_num": 27.72, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-07-12 08:44:39", "custRechNo": "24-A404", "power_raw": "6.93度", "power_num": 6.93, "balance_raw": "3.47元", "balance_num": 3.47, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-07-12 08:46:47", "custRechNo": "24-A404", "power_raw": "6.93度", "power_num": 6.93, "balance_raw": "3.47元", "balance_num": 3.47, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-07-12 08:52", "custRechNo": "24-A404", "power_raw": "6.90度", "power_num": 6.9, "balance_raw": "3.45元", "balance_num": 3.45, "subsidy_raw": "0.00度", "subsidy_num": 0.0}];
+const tbody = document.getElementById('historyTable');
+let prevP = null;
+historyData.reverse().forEach(h => {
+  let consumed = '';
+  if (prevP !== null && h.power_num !== null) {
+    const diff = Math.round((prevP - h.power_num) * 100) / 100;
+    if (diff > 0) consumed = '<span class="consumed">-' + diff + ' 度</span>';
+    else if (diff < 0) consumed = '<span style="color:#22c55e">+' + Math.abs(diff).toFixed(2) + ' 度</span>';
+    else consumed = '—';
+  } else {
+    consumed = '—';
+  }
+  tbody.innerHTML += '<tr>' +
+    '<td>' + (h.time || '') + '</td>' +
+    '<td>' + (h.custRechNo || '') + '</td>' +
+    '<td class="td-power">' + (h.power_raw || '—') + '</td>' +
+    '<td>' + (h.balance_raw || '—') + '</td>' +
+    '<td>' + consumed + '</td>' +
+    '</tr>';
+  prevP = h.power_num;
+});
+</script>
+
+<!-- Service Worker 注册 -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('./sw.js').catch(function(e) {
+      console.log('SW registration failed:', e);
+    });
+  });
+}
+
+// 刷新查询
+function handleRefresh() {
+  var btn = document.getElementById('refreshBtn');
+  var icon = document.getElementById('refreshIcon');
+  var text = document.getElementById('refreshText');
+  btn.classList.add('loading');
+  icon.innerHTML = '<span class="spinner"></span>';
+  text.textContent = '查询中...';
+
+  fetch('./api/query', { method: 'POST' })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.success) {
+        showToast('✅ 查询成功！页面刷新中...');
+        setTimeout(function() { window.location.reload(); }, 1000);
+      } else {
+        showToast('❌ 查询失败: ' + (data.error || '未知错误'));
+        btn.classList.remove('loading');
+        icon.textContent = '🔄';
+        text.textContent = '刷新查询';
+      }
+    })
+    .catch(function(err) {
+      showToast('❌ 网络错误，请确认服务正在运行');
+      btn.classList.remove('loading');
+      icon.textContent = '🔄';
+      text.textContent = '刷新查询';
+    });
+}
+
+// Toast 提示
+function showToast(msg) {
+  var existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+  var toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(function() { toast.classList.add('show'); }, 10);
+  setTimeout(function() {
+    toast.classList.remove('show');
+    setTimeout(function() { toast.remove(); }, 300);
+  }, 3000);
+}
+
+// 每 5 分钟自动刷新页面（获取最新仪表盘数据）
+setTimeout(function() { window.location.reload(); }, 5 * 60 * 1000);
+</script>
+
+</body>
+</html>
