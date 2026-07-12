@@ -351,7 +351,7 @@
   </div>
 
   <div class="footer">
-    自动生成于 2026-07-12 09:22:49 · 数据来源：大连东软信息学院电费查询系统
+    自动生成于 2026-07-12 09:35:02 · 数据来源：大连东软信息学院电费查询系统
   </div>
 </div>
 
@@ -543,6 +543,15 @@ if ('serviceWorker' in navigator) {
 
 // 刷新查询
 function handleRefresh() {
+  // GitHub Pages 模式：跳转到 Actions 手动触发
+  if (window.location.hostname.indexOf('github.io') !== -1) {
+    showToast('🔄 跳转到手动更新页面...');
+    setTimeout(function() {
+      window.open('https://github.com/manchi511/electricity-monitor/actions/workflows/update.yml', '_blank');
+    }, 500);
+    return;
+  }
+  // 本地服务器模式：调用 API
   var btn = document.getElementById('refreshBtn');
   var icon = document.getElementById('refreshIcon');
   var text = document.getElementById('refreshText');
@@ -570,6 +579,16 @@ function handleRefresh() {
       text.textContent = '刷新查询';
     });
 }
+
+// 页面加载时检测 GitHub Pages，更新按钮文字
+(function() {
+  if (window.location.hostname.indexOf('github.io') !== -1) {
+    var t = document.getElementById('refreshText');
+    var b = document.getElementById('refreshBtn');
+    if (t) t.textContent = '手动更新';
+    if (b) b.title = '点击跳转到 GitHub Actions 手动触发更新';
+  }
+})();
 
 // Toast 提示
 function showToast(msg) {
