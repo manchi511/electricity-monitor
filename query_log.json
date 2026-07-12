@@ -1,0 +1,132 @@
+[
+  {
+    "time": "2026-05-31 13:54:34",
+    "custRechNo": "24-A404",
+    "power_raw": "58.90度",
+    "power_num": 58.9,
+    "balance_raw": "29.45元",
+    "balance_num": 29.45,
+    "subsidy_raw": "0.00度",
+    "subsidy_num": 0.0
+  },
+  {
+    "time": "2026-05-31 14:10:35",
+    "custRechNo": "24-A404",
+    "power_raw": "58.81度",
+    "power_num": 58.81,
+    "balance_raw": "29.41元",
+    "balance_num": 29.41,
+    "subsidy_raw": "0.00度",
+    "subsidy_num": 0.0
+  },
+  {
+    "time": "2026-05-31 14:23:48",
+    "custRechNo": "24-A404",
+    "power_raw": "58.74度",
+    "power_num": 58.74,
+    "balance_raw": "29.37元",
+    "balance_num": 29.37,
+    "subsidy_raw": "0.00度",
+    "subsidy_num": 0.0
+  },
+  {
+    "time": "2026-05-31 15:02",
+    "custRechNo": "24-A404",
+    "power_raw": "58.57度",
+    "power_num": 58.57,
+    "balance_raw": "29.29元",
+    "balance_num": 29.29,
+    "subsidy_raw": "0.00度",
+    "subsidy_num": 0.0
+  },
+  {
+    "time": "2026-05-31 15:02",
+    "custRechNo": "24-A404",
+    "power_raw": "58.57度",
+    "power_num": 58.57,
+    "balance_raw": "29.29元",
+    "balance_num": 29.29,
+    "subsidy_raw": "0.00度",
+    "subsidy_num": 0.0
+  },
+  {
+    "time": "2026-05-31 15:03:28",
+    "custRechNo": "24-A404",
+    "power_raw": "58.56度",
+    "power_num": 58.56,
+    "balance_raw": "29.28元",
+    "balance_num": 29.28,
+    "subsidy_raw": "0.00度",
+    "subsidy_num": 0.0
+  },
+  {
+    "time": "2026-05-31 15:28:41",
+    "custRechNo": "24-A404",
+    "power_raw": "58.48度",
+    "power_num": 58.48,
+    "balance_raw": "29.24元",
+    "balance_num": 29.24,
+    "subsidy_raw": "0.00度",
+    "subsidy_num": 0.0
+  },
+  {
+    "time": "2026-05-31 15:37",
+    "custRechNo": "24-A404",
+    "power_raw": "58.45度",
+    "power_num": 58.45,
+    "balance_raw": "29.22元",
+    "balance_num": 29.22,
+    "subsidy_raw": "0.00度",
+    "subsidy_num": 0.0
+  },
+  {
+    "time": "2026-05-31 22:31",
+    "custRechNo": "24-A404",
+    "power_raw": "55.45度",
+    "power_num": 55.45,
+    "balance_raw": "27.72元",
+    "balance_num": 27.72,
+    "subsidy_raw": "0.00度",
+    "subsidy_num": 0.0
+  },
+  {
+    "time": "2026-05-31 22:50",
+    "custRechNo": "24-A404",
+    "power_raw": "55.43度",
+    "power_num": 55.43,
+    "balance_raw": "27.72元",
+    "balance_num": 27.72,
+    "subsidy_raw": "0.00度",
+    "subsidy_num": 0.0
+  },
+  {
+    "time": "2026-07-12 08:44:39",
+    "custRechNo": "24-A404",
+    "power_raw": "6.93度",
+    "power_num": 6.93,
+    "balance_raw": "3.47元",
+    "balance_num": 3.47,
+    "subsidy_raw": "0.00度",
+    "subsidy_num": 0.0
+  },
+  {
+    "time": "2026-07-12 08:46:47",
+    "custRechNo": "24-A404",
+    "power_raw": "6.93度",
+    "power_num": 6.93,
+    "balance_raw": "3.47元",
+    "balance_num": 3.47,
+    "subsidy_raw": "0.00度",
+    "subsidy_num": 0.0
+  },
+  {
+    "time": "2026-07-12 08:52",
+    "custRechNo": "24-A404",
+    "power_raw": "6.90度",
+    "power_num": 6.9,
+    "balance_raw": "3.45元",
+    "balance_num": 3.45,
+    "subsidy_raw": "0.00度",
+    "subsidy_num": 0.0
+  }
+]
