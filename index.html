@@ -232,7 +232,7 @@
     </div>
   </div>
   <div class="nav-right">
-    <div class="nav-time">🕐 2026-07-14 22:06:06</div>
+    <div class="nav-time">🕐 2026-07-15 22:30:37</div>
     <div class="nav-room">🏠 24-A404</div>
     <button class="refresh-btn" id="refreshBtn" onclick="handleRefresh()">
       <span id="refreshIcon">🔄</span> <span id="refreshText">刷新查询</span>
@@ -248,9 +248,9 @@
   <div class="card-row">
     <div class="card">
       <div class="card-label">⚡ 剩余电量</div>
-      <div class="card-value green">36.56度</div>
+      <div class="card-value green">28.21度</div>
       <div class="card-bar">
-        <div class="card-bar-fill" style="width: 36.56%; background: #22c55e;"></div>
+        <div class="card-bar-fill" style="width: 28.21%; background: #22c55e;"></div>
       </div>
       <div class="card-tag ok">
         ✅ 电量充足
@@ -259,9 +259,9 @@
 
     <div class="card">
       <div class="card-label">💰 当前余额</div>
-      <div class="card-value blue">18.28元</div>
+      <div class="card-value blue">14.10元</div>
       <div class="card-bar">
-        <div class="card-bar-fill" style="width: 36.56%; background: #3b82f6;"></div>
+        <div class="card-bar-fill" style="width: 28.2%; background: #3b82f6;"></div>
       </div>
       <div class="card-tag ok">
         ✅ 余额正常
@@ -284,19 +284,19 @@
   <div class="stats-row">
     <div class="stat-item">
       <div class="stat-label">📊 日均用电</div>
-      <div class="stat-value">0.5<span class="stat-unit"> 度/天</span></div>
+      <div class="stat-value">0.68<span class="stat-unit"> 度/天</span></div>
     </div>
     <div class="stat-item">
       <div class="stat-label">📅 预估可用</div>
-      <div class="stat-value" style="color: #22c55e">72<span class="stat-unit"> 天</span></div>
+      <div class="stat-value" style="color: #22c55e">41<span class="stat-unit"> 天</span></div>
     </div>
     <div class="stat-item">
       <div class="stat-label">⚡ 累计消耗</div>
-      <div class="stat-value">22.34<span class="stat-unit"> 度</span></div>
+      <div class="stat-value">30.69<span class="stat-unit"> 度</span></div>
     </div>
     <div class="stat-item">
       <div class="stat-label">📋 查询次数</div>
-      <div class="stat-value">16<span class="stat-unit"> 次</span></div>
+      <div class="stat-value">17<span class="stat-unit"> 次</span></div>
     </div>
   </div>
 
@@ -351,17 +351,17 @@
   </div>
 
   <div class="footer">
-    自动生成于 2026-07-14 22:06:06 · 数据来源：大连东软信息学院电费查询系统
+    自动生成于 2026-07-15 22:30:37 · 数据来源：大连东软信息学院电费查询系统
   </div>
 </div>
 
 <script>
-const chartLabels = ["05-31 13:54", "05-31 14:10", "05-31 14:23", "05-31 15:02", "05-31 15:02", "05-31 15:03", "05-31 15:28", "05-31 15:37", "05-31 22:31", "05-31 22:50", "07-12 08:44", "07-12 08:46", "07-12 08:52", "07-13 22:00", "07-14 12:00", "07-14 22:06"];
-const powerData = [58.9, 58.81, 58.74, 58.57, 58.57, 58.56, 58.48, 58.45, 55.45, 55.43, 6.93, 6.93, 6.9, 42.64, 41.2, 36.56];
-const balanceData = [29.45, 29.41, 29.37, 29.29, 29.29, 29.28, 29.24, 29.22, 27.72, 27.72, 3.47, 3.47, 3.45, 21.32, 20.6, 18.28];
-const consumptionData = [0, 0.09, 0.07, 0.17, 0, 0.01, 0.08, 0.03, 3.0, 0.02, 48.5, 0, 0.03, 0, 1.44, 4.64];
-const dailyLabels = ["2026-05-31", "2026-07-12", "2026-07-14"];
-const dailyValues = [3.47, 48.53, 6.08];
+const chartLabels = ["05-31 13:54", "05-31 14:10", "05-31 14:23", "05-31 15:02", "05-31 15:02", "05-31 15:03", "05-31 15:28", "05-31 15:37", "05-31 22:31", "05-31 22:50", "07-12 08:44", "07-12 08:46", "07-12 08:52", "07-13 22:00", "07-14 12:00", "07-14 22:06", "07-15 22:30"];
+const powerData = [58.9, 58.81, 58.74, 58.57, 58.57, 58.56, 58.48, 58.45, 55.45, 55.43, 6.93, 6.93, 6.9, 42.64, 41.2, 36.56, 28.21];
+const balanceData = [29.45, 29.41, 29.37, 29.29, 29.29, 29.28, 29.24, 29.22, 27.72, 27.72, 3.47, 3.47, 3.45, 21.32, 20.6, 18.28, 14.1];
+const consumptionData = [0, 0.09, 0.07, 0.17, 0, 0.01, 0.08, 0.03, 3.0, 0.02, 48.5, 0, 0.03, 0, 1.44, 4.64, 8.35];
+const dailyLabels = ["2026-05-31", "2026-07-12", "2026-07-14", "2026-07-15"];
+const dailyValues = [3.47, 48.53, 6.08, 8.35];
 
 Chart.defaults.font.family = "'Microsoft YaHei', sans-serif";
 Chart.defaults.color = '#6b7280';
@@ -507,7 +507,7 @@ new Chart(document.getElementById('dailyChart'), {
 });
 
 // 历史表格
-const historyData = [{"time": "2026-05-31 13:54:34", "custRechNo": "24-A404", "power_raw": "58.90度", "power_num": 58.9, "balance_raw": "29.45元", "balance_num": 29.45, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 14:10:35", "custRechNo": "24-A404", "power_raw": "58.81度", "power_num": 58.81, "balance_raw": "29.41元", "balance_num": 29.41, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 14:23:48", "custRechNo": "24-A404", "power_raw": "58.74度", "power_num": 58.74, "balance_raw": "29.37元", "balance_num": 29.37, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 15:02", "custRechNo": "24-A404", "power_raw": "58.57度", "power_num": 58.57, "balance_raw": "29.29元", "balance_num": 29.29, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 15:02", "custRechNo": "24-A404", "power_raw": "58.57度", "power_num": 58.57, "balance_raw": "29.29元", "balance_num": 29.29, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 15:03:28", "custRechNo": "24-A404", "power_raw": "58.56度", "power_num": 58.56, "balance_raw": "29.28元", "balance_num": 29.28, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 15:28:41", "custRechNo": "24-A404", "power_raw": "58.48度", "power_num": 58.48, "balance_raw": "29.24元", "balance_num": 29.24, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 15:37", "custRechNo": "24-A404", "power_raw": "58.45度", "power_num": 58.45, "balance_raw": "29.22元", "balance_num": 29.22, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 22:31", "custRechNo": "24-A404", "power_raw": "55.45度", "power_num": 55.45, "balance_raw": "27.72元", "balance_num": 27.72, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 22:50", "custRechNo": "24-A404", "power_raw": "55.43度", "power_num": 55.43, "balance_raw": "27.72元", "balance_num": 27.72, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-07-12 08:44:39", "custRechNo": "24-A404", "power_raw": "6.93度", "power_num": 6.93, "balance_raw": "3.47元", "balance_num": 3.47, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-07-12 08:46:47", "custRechNo": "24-A404", "power_raw": "6.93度", "power_num": 6.93, "balance_raw": "3.47元", "balance_num": 3.47, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-07-12 08:52", "custRechNo": "24-A404", "power_raw": "6.90度", "power_num": 6.9, "balance_raw": "3.45元", "balance_num": 3.45, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-07-13 22:00:11", "custRechNo": "24-A404", "power_raw": "42.64度", "power_num": 42.64, "balance_raw": "21.32元", "balance_num": 21.32, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-07-14 12:00:11", "custRechNo": "24-A404", "power_raw": "41.20度", "power_num": 41.2, "balance_raw": "20.60元", "balance_num": 20.6, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-07-14 22:06:06", "custRechNo": "24-A404", "power_raw": "36.56度", "power_num": 36.56, "balance_raw": "18.28元", "balance_num": 18.28, "subsidy_raw": "0.00度", "subsidy_num": 0.0}];
+const historyData = [{"time": "2026-05-31 13:54:34", "custRechNo": "24-A404", "power_raw": "58.90度", "power_num": 58.9, "balance_raw": "29.45元", "balance_num": 29.45, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 14:10:35", "custRechNo": "24-A404", "power_raw": "58.81度", "power_num": 58.81, "balance_raw": "29.41元", "balance_num": 29.41, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 14:23:48", "custRechNo": "24-A404", "power_raw": "58.74度", "power_num": 58.74, "balance_raw": "29.37元", "balance_num": 29.37, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 15:02", "custRechNo": "24-A404", "power_raw": "58.57度", "power_num": 58.57, "balance_raw": "29.29元", "balance_num": 29.29, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 15:02", "custRechNo": "24-A404", "power_raw": "58.57度", "power_num": 58.57, "balance_raw": "29.29元", "balance_num": 29.29, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 15:03:28", "custRechNo": "24-A404", "power_raw": "58.56度", "power_num": 58.56, "balance_raw": "29.28元", "balance_num": 29.28, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 15:28:41", "custRechNo": "24-A404", "power_raw": "58.48度", "power_num": 58.48, "balance_raw": "29.24元", "balance_num": 29.24, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 15:37", "custRechNo": "24-A404", "power_raw": "58.45度", "power_num": 58.45, "balance_raw": "29.22元", "balance_num": 29.22, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 22:31", "custRechNo": "24-A404", "power_raw": "55.45度", "power_num": 55.45, "balance_raw": "27.72元", "balance_num": 27.72, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-05-31 22:50", "custRechNo": "24-A404", "power_raw": "55.43度", "power_num": 55.43, "balance_raw": "27.72元", "balance_num": 27.72, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-07-12 08:44:39", "custRechNo": "24-A404", "power_raw": "6.93度", "power_num": 6.93, "balance_raw": "3.47元", "balance_num": 3.47, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-07-12 08:46:47", "custRechNo": "24-A404", "power_raw": "6.93度", "power_num": 6.93, "balance_raw": "3.47元", "balance_num": 3.47, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-07-12 08:52", "custRechNo": "24-A404", "power_raw": "6.90度", "power_num": 6.9, "balance_raw": "3.45元", "balance_num": 3.45, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-07-13 22:00:11", "custRechNo": "24-A404", "power_raw": "42.64度", "power_num": 42.64, "balance_raw": "21.32元", "balance_num": 21.32, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-07-14 12:00:11", "custRechNo": "24-A404", "power_raw": "41.20度", "power_num": 41.2, "balance_raw": "20.60元", "balance_num": 20.6, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-07-14 22:06:06", "custRechNo": "24-A404", "power_raw": "36.56度", "power_num": 36.56, "balance_raw": "18.28元", "balance_num": 18.28, "subsidy_raw": "0.00度", "subsidy_num": 0.0}, {"time": "2026-07-15 22:30:37", "custRechNo": "24-A404", "power_raw": "28.21度", "power_num": 28.21, "balance_raw": "14.10元", "balance_num": 14.1, "subsidy_raw": "0.00度", "subsidy_num": 0.0}];
 const tbody = document.getElementById('historyTable');
 let prevP = null;
 historyData.reverse().forEach(h => {
